@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+
+  <!-- Tailwind (CDN) isolated: prefix + no preflight -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      prefix: 'tw-',
+      corePlugins: { preflight: false },
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+            orbitron: ['Orbitron', 'JetBrains Mono', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            bg: '#0a0f1c',
+            brand: '#00ff88',    /* neon green */
+            accent: '#00e5ff',   /* neon cyan */
+            purple: '#a855f7'    /* neon purple */
+          },
+          boxShadow: {
+            neon: '0 0 0.5rem rgba(0,255,136,0.7), 0 0 1.25rem rgba(0,229,255,0.4), inset 0 0 0 rgba(0,0,0,0)',
+            soft: '0 10px 30px rgba(0,0,0,0.25)',
+            lift: '0 16px 40px rgba(0,255,136,0.18)'
+          },
+          dropShadow: {
+            neon: '0 0 10px rgba(0,255,136,0.9)'
+          },
+          keyframes: {
+            floaty: {
+              '0%': { transform: 'translateY(0) translateX(0)' },
+              '50%': { transform: 'translateY(-12px) translateX(6px)' },
+              '100%': { transform: 'translateY(0) translateX(0)' }
+            },
+            drift: {
+              '0%': { transform: 'translateY(0) translateX(0) rotate(0deg)' },
+              '100%': { transform: 'translateY(-120vh) translateX(30vw) rotate(10deg)' }
+            },
+            blink: { '0%, 49%': { opacity: '1' }, '50%,100%': { opacity: '0' } }
+          },
+          animation: {
+            floaty: 'floaty 5s ease-in-out infinite',
+            drift: 'drift 18s linear infinite',
+            blink: 'blink 1s steps(2, start) infinite'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <title>MLSA-DYPCET Chapter</title>
+  <link rel="icon" href="assets/mlsa.jpeg">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="bg-grid tw-antialiased">
+  <!-- Matrix background -->
+  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+  <div class="code-floats" aria-hidden="true" id="code-floats"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#hero" aria-label="MLSA Home">
+        <img src="assets/mlsadypcet.png" alt="MLSA DYPCET Logo" class="tw-h-12 tw-max-w-48 tw-object-contain" />
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"
+              aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto align-items-lg-center tw-gap-1">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="team.html">Team</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+         
+          <% if (user) { %>
+    <!-- Show only when logged in -->
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/dashboard">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </li>
+  <% } else { %>
+    <!-- Show login when not logged in -->
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/login">
+        <i class="fas fa-user"></i> Login
+      </a>
+    </li>
+  <% } %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header id="hero" class="tw-pt-20 tw-pb-16 tw-relative">
+    <div class="container position-relative">
+      <div class="row align-items-center">
+        <div class="col-lg-7 tw-space-y-3 reveal">
+          <span class="tw-inline-flex tw-items-center tw-gap-2 tw-text-xs tw-uppercase tw-tracking-widest tw-text-accent tw-bg-[rgba(0,229,255,0.1)] tw-rounded-full tw-px-3 tw-py-1 tw-border tw-border-[rgba(0,229,255,0.3)]">
+            <i class="fa-solid fa-terminal"></i> Innovation mode:ON
+          </span>
+
+          <h1 class="glitch tw-font-orbitron tw-text-4xl tw-sm:text-5xl tw-lg:text-6xl tw-font-extrabold tw-leading-tight tw-text-white">
+            Microsoft Learn Student Ambassadors <p>DYPCET Chapter</p>
+          </h1>
+
+          <h2 class="tw-text-[1.05rem] tw-text-[var(--muted)] tw-max-w-2xl">
+            <span class="typewriter tw-text-brand" id="typed"></span><span class="cursor">|</span>
+          </h2>
+
+          <div class="tw-flex tw-flex-wrap tw-gap-3 tw-pt-1">
+            <a href="#events" class="btn btn-brand tw-rounded-full tw-px-4 tw-py-2 tw-font-semibold">Explore Events</a>
+            <a href="#contact" class="btn btn-outline-brand tw-rounded-full tw-px-4 tw-py-2">Join Community</a>
+          </div>
+
+          <div class="tw-flex tw-items-center tw-gap-4 tw-pt-3 tw-text-sm tw-text-[var(--muted)]">
+            <span class="tw-inline-flex tw-items-center tw-gap-2"><i class="fa-solid fa-shield-halved tw-text-brand"></i> Inclusive</span>
+            <span class="tw-inline-flex tw-items-center tw-gap-2"><i class="fa-solid fa-bolt tw-text-accent"></i> Hands-on</span>
+            <span class="tw-inline-flex tw-items-center tw-gap-2"><i class="fa-solid fa-microchip tw-text-purple"></i> Future-ready</span>
+          </div>
+        </div>
+
+        <div class="col-lg-5 tw-pt-5 pt-lg-0 reveal">
+          <div class="tw-rounded-2xl tw-border tw-border-[rgba(0,229,255,0.25)] tw-bg-[rgba(14,21,48,0.4)] tw-p-4 tw-shadow-neon tw-animate-floaty">
+            <div class="ratio ratio-16x9 tw-rounded-xl overflow-hidden">
+              <div class="tw-w-full tw-h-full tw-bg-[radial-gradient(circle_at_30%_20%,rgba(0,229,255,0.25),transparent_40%),radial-gradient(circle_at_80%_60%,rgba(168,85,247,0.18),transparent_40%)] tw-flex tw-items-center tw-justify-center">
+                <img src="assets/micro.png" alt="Float Image" class="tw-w-65 tw-h-60 tw-object-cover tw-rounded-lg" />
+              </div>
+            </div>
+            <p class="tw-text-[var(--muted)] tw-text-sm tw-mt-3 tw-mb-0">D.Y.Patil College of engineering & technology,Kolhapur</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- Event Registration -->
+<% 
+  const activeEvent = events.find(e => e.registration_link); 
+%>
+
+<% if (activeEvent) { %>
+<section id="event-registration" class="tw-py-12 tw-pt-16">
+  <div class="container">
+    
+    <!-- Heading -->
+    <div class="text-center reveal tw-mb-5">
+      <h3 class="tw-font-orbitron tw-text-3xl tw-font-bold tw-text-white">
+        Event Registration Open
+      </h3>
+      <p class="tw-text-[var(--muted)] tw-mt-2 tw-mx-auto tw-max-w-2xl">
+        Register now and secure your spot!
+      </p>
+    </div>
+
+    <!-- Registration Card -->
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6 reveal">
+        <div class="neon-card tw-rounded-2xl tw-overflow-hidden">
+
+          <!-- Poster -->
+          <% if (activeEvent.poster_url) { %>
+            <img 
+              src="<%= activeEvent.poster_url %>" 
+              alt="<%= activeEvent.title %> Poster"
+              class="w-100"
+            />
+          <% } %>
+
+          <!-- Content -->
+          <div class="tw-p-4 tw-text-center">
+            <h4 class="tw-text-white tw-font-semibold tw-mb-2">
+              <%= activeEvent.title %>
+            </h4>
+
+            <p class="tw-text-[var(--muted)] tw-mb-4">
+              <i class="fa-solid fa-calendar tw-text-accent"></i>
+              <%= new Date(activeEvent.date).toDateString() %>
+            </p>
+
+            <!-- Register Button -->
+            <a 
+              href="<%= activeEvent.registration_link %>" 
+              target="_blank"
+              class="btn btn-brand tw-rounded-full tw-px-5 tw-py-2 tw-font-semibold"
+            >
+              <i class="fa-solid fa-pen-to-square"></i> Register Now
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<% } %>
+
+  <!-- About -->
+  <section id="about" class="tw-py-12 tw-pt-20">
+    <div class="container">
+      <div class="text-center reveal">
+        <h3 class="tw-font-orbitron tw-text-3xl tw-font-bold tw-text-white">About Us</h3>
+        <p class="tw-text-[var(--muted)] tw-mt-2 tw-mx-auto tw-max-w-2xl">A student-led community driving collaborative learning through workshops, hack nights, and mentorship across cloud, AI, web, and DevOps tracks.</p>
+      </div>
+      <div class="row g-4 tw-mt-1">
+        <div class="col-md-4 reveal">
+          <div class="neon-card tw-rounded-xl tw-p-4 h-100">
+            <div class="tw-flex tw-items-center tw-gap-3">
+              <i class="fa-solid fa-rocket tw-text-brand"></i>
+              <h5 class="tw-m-0 tw-text-white">Career Boost</h5>
+            </div>
+            <p class="tw-text-[var(--muted)] tw-mt-2">Showcase projects, earn recognition, and grow with peer-led labs and expert sessions.</p>
+          </div>
+        </div>
+        <div class="col-md-4 reveal">
+          <div class="neon-card tw-rounded-xl tw-p-4 h-100">
+            <div class="tw-flex tw-items-center tw-gap-3">
+              <i class="fa-solid fa-people-group tw-text-accent"></i>
+              <h5 class="tw-m-0 tw-text-white">Community</h5>
+            </div>
+            <p class="tw-text-[var(--muted)] tw-mt-2">Team up across domains to build, ship, and iterate on ideas with impact.</p>
+          </div>
+        </div>
+        <div class="col-md-4 reveal">
+          <div class="neon-card tw-rounded-xl tw-p-4 h-100">
+            <div class="tw-flex tw-items-center tw-gap-3">
+              <i class="fa-solid fa-certificate tw-text-purple"></i>
+              <h5 class="tw-m-0 tw-text-white">Recognition</h5>
+            </div>
+            <p class="tw-text-[var(--muted)] tw-mt-2">Lead events, deliver talks, and earn badges as contributions grow.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Events -->
+  <section id="events" class="tw-py-12 tw-pt-20">
+    <div class="container">
+      <div class="text-center reveal">
+        <h3 class="tw-font-orbitron tw-text-3xl tw-font-bold tw-text-white">Upcoming Events</h3>
+        <p class="tw-text-[var(--muted)] tw-mt-2 tw-mx-auto tw-max-w-2xl">Learn, build, and network through our hands-on sessions and meetups.</p>
+      </div>
+
+         <% if (events.length > 0) { %>
+        <% events.forEach(event => { %>
+          <div class="col-md-6 col-lg-4 reveal">
+            <div class="card neon-card tw-rounded-xl h-100">
+              <div class="card-img-top d-flex align-items-end justify-content-start p-3" 
+                   style="height: 160px; background: linear-gradient(135deg, rgba(0,229,255,0.22) 0%, rgba(168,85,247,0.22) 100%);">
+                <span class="badge rounded-pill px-3 py-2 bg-white tw-text-brand tw-font-semibold">
+                  <%= new Date(event.date).toDateString() %>
+                </span>
+              </div>
+              <% if (event.image_url) { %>
+                <img src="<%= event.image_url %>" class="card-img-top" alt="<%= event.title %>">
+              <% } %>
+              <div class="card-body">
+                <h5 class="card-title tw-text-white"><%= event.title %></h5>
+                <p class="card-text tw-text-[var(--muted)]"><%= event.description %></p>
+                <small class="tw-text-[var(--muted)]">
+                  <i class="fa-solid fa-map-marker-alt tw-text-accent"></i>
+                  <%= event.venue %> | <%= event.mode %>
+                </small>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0">
+                <a class="btn btn-outline-brand btn-sm tw-rounded-full" href="#">Learn More</a>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <p class="text-center tw-text-[var(--muted)] mt-3">No upcoming events right now. Stay tuned!</p>
+      <% } %>
+
+
+       
+
+  </section>
+
+  <!-- Our Teams -->
+  <div class="row g-4 tw-mt-4 justify-content-center">
+    <div class="text-center reveal tw-mb-4">
+  <h3 class="tw-font-orbitron tw-text-3xl tw-font-bold tw-text-white">
+    Club Members
+  </h3>
+  <p class="tw-text-[var(--muted)] tw-mt-2 tw-mx-auto tw-max-w-2xl">
+    Meet the passionate students driving MLSA DYPCET forward
+  </p>
+</div>
+
+  <!-- Head 1 -->
+  <div class="row g-4">
+  <% team.forEach(member => { %>
+    <div class="col-md-6 col-lg-4 reveal">
+      <div class="team-card neon-card tw-rounded-xl h-100">
+        <div class="team-card-img-container tw-overflow-hidden">
+          <% if(member.photo_url){ %>
+            <img src="<%= member.photo_url %>" alt="<%= member.name %> - <%= member.role %>" class="team-card-img" />
+          <% } else { %>
+            <img src="/assets/default-profile.png" alt="Default Profile" class="team-card-img" />
+          <% } %>
+        </div>
+        <div class="team-card-content">
+          <h5 class="team-card-name"><%= member.name %></h5>
+          <p class="team-card-role"><%= member.role %></p>
+          <p class="team-card-dept"><%= member.info %></p>
+          
+        </div>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+
+  <!-- Head 2 -->
+  
+  <!-- head-3 -->
+   
+
+ 
+  
+</div>
+
+<!-- See More Button -->
+<div class="text-center tw-mt-5">
+  <a href="team.html" class="btn btn-primary">See More Members</a>
+</div>
+
+
+        <!-- Dots Indicator -->
+        <div class="tw-flex tw-justify-center tw-mt-8 tw-gap-3">
+          <div class="tw-w-3 tw-h-3 tw-rounded-full tw-bg-gradient-to-r tw-from-brand tw-to-accent tw-opacity-60 tw-transition-all tw-duration-300 slider-dot active tw-cursor-pointer tw-shadow-lg" data-slide="0"></div>
+          <div class="tw-w-3 tw-h-3 tw-rounded-full tw-bg-gradient-to-r tw-from-brand tw-to-accent tw-opacity-60 tw-transition-all tw-duration-300 slider-dot tw-cursor-pointer tw-shadow-lg" data-slide="1"></div>
+          <div class="tw-w-3 tw-h-3 tw-rounded-full tw-bg-gradient-to-r tw-from-brand tw-to-accent tw-opacity-60 tw-transition-all tw-duration-300 slider-dot tw-cursor-pointer tw-shadow-lg" data-slide="2"></div>
+          <div class="tw-w-3 tw-h-3 tw-rounded-full tw-bg-gradient-to-r tw-from-brand tw-to-accent tw-opacity-60 tw-transition-all tw-duration-300 slider-dot tw-cursor-pointer tw-shadow-lg" data-slide="3"></div>
+          <div class="tw-w-3 tw-h-3 tw-rounded-full tw-bg-gradient-to-r tw-from-brand tw-to-accent tw-opacity-60 tw-transition-all tw-duration-300 slider-dot tw-cursor-pointer tw-shadow-lg" data-slide="4"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="tw-py-12 tw-pt-20">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+          <div class="neon-card tw-rounded-2xl tw-p-4 tw-p-md-5 reveal">
+            <h3 class="tw-text-center tw-text-white tw-font-orbitron tw-text-2xl tw-mb-2">Get in Touch</h3>
+            <p class="tw-text-center tw-text-[var(--muted)] tw-mb-4">Have questions or want to get involved? Reach out!</p>
+
+            <form class="tw-space-y-3" onsubmit="event.preventDefault(); alert('Message sent!');">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Name</label>
+                  <input type="text" class="form-control tw-bg-transparent tw-text-white tw-border-[rgba(0,229,255,0.4)] tw-rounded-lg" placeholder="Your name" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control tw-bg-transparent tw-text-white tw-border-[rgba(0,229,255,0.4)] tw-rounded-lg" placeholder="you@example.com" required />
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Message</label>
+                  <textarea rows="4" class="form-control tw-bg-transparent tw-text-white tw-border-[rgba(0,229,255,0.4)] tw-rounded-lg" placeholder="How can we help?" required></textarea>
+                </div>
+              </div>
+              <div class="tw-flex tw-justify-center tw-pt-1">
+                <button type="submit" class="btn btn-brand tw-rounded-full tw-px-4 tw-py-2">Send Message</button>
+              </div>
+            </form>
+
+            <div class="tw-text-center tw-mt-3 tw-text-sm tw-text-[var(--muted)]">
+              Or email: <a href="mailto:mlsadypcet@gmail.com" class="tw-text-accent">mlsadypcet@gmail.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="tw-pt-5">
+    <div class="container tw-pb-3">
+      <div class="row gy-4">
+        <div class="col-lg-6">
+          <div class="tw-flex tw-items-center tw-gap-2 tw-mb-2">
+            <span class="tw-inline-flex tw-items-center tw-justify-center tw-w-9 tw-h-9 tw-rounded-lg tw-bg-[rgba(0,229,255,0.12)] tw-border tw-border-[rgba(0,229,255,0.25)] tw-text-accent">M</span>
+            <span class="tw-text-white tw-font-semibold tw-text-lg">MLSA</span>
+          </div>
+          <p class="tw-text-[var(--muted)] tw-mb-0">Student-led community hosting events, workshops, and projects to level up skills and build connections in tech.</p>
+        </div>
+        <div class="col-lg-6">
+          <h6 class="tw-text-white tw-mb-2">Connect with us</h6>
+          <div class="tw-flex tw-gap-3 tw-mb-3">
+            <a class="tw-text-accent" href="https://www.linkedin.com/company/mlsa-dypcet-chapter/" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a class="tw-text-purple" href="https://www.instagram.com/mlsa_dypcet_chapter?igsh=MXA2Zmx2YW03dGdudA==" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a class="tw-text-brand" href="https://chat.whatsapp.com/JFjnknqBVnGAqbASqMzPQF" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+          <p class="tw-text-[var(--muted)] tw-mb-0">Email: <a class="tw-text-white" href="mailto:mlsadypcet@gmail.com">mlsadypcet@gmail.com</a></p>
+        </div>
+      </div>
+      <hr class="border-white border-opacity-25 my-4">
+      <div class="tw-flex tw-justify-between tw-items-center tw-text-[var(--muted)] tw-text-xs">
+        <span> 2025 MLSA</span>
+       
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JavaScript -->
+  <script src="js/main.js"></script>
+</body>
+</html>
+});
+  </script>
+</body>
+</html>

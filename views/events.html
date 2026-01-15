@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Tailwind (CDN) isolated: prefix + no preflight -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/event.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <title>Events • MLSA</title>
+  <link rel="stylesheet" href="css/event.css" />
+
+</head>
+
+<body class="bg-grid tw-antialiased">
+  <!-- Matrix background -->
+  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+  <div class="code-floats" aria-hidden="true" id="code-floats"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="index.html" aria-label="MLSA Home">
+        <span class="tw-font-orbitron tw-text-xl tw-text-accent tw-tracking-widest tw-drop-shadow-neon">MLSA</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"
+              aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto align-items-lg-center tw-gap-1">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+          <li class="nav-item"><a class="nav-link active" href="events.html">Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="team.html">Team</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Events Header -->
+  <header class="tw-pt-10 tw-pb-6 tw-relative">
+    <div class="container position-relative">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-8 reveal">
+          <span class="tw-inline-flex tw-items-center tw-gap-2 tw-text-xs tw-uppercase tw-tracking-widest tw-text-accent tw-bg-[rgba(0,229,255,0.1)] tw-rounded-full tw-px-3 tw-py-1 tw-border tw-border-[rgba(0,229,255,0.3)]">
+            <i class="fa-solid fa-calendar-days"></i> Event Calendar
+          </span>
+
+          <h1 class="tw-font-orbitron tw-text-4xl tw-sm:text-5xl tw-font-extrabold tw-leading-tight tw-text-white tw-mt-3">
+            MLSA Events
+          </h1>
+
+          <p class="tw-text-[1.05rem] tw-text-[var(--muted)]">
+            Join our community events to learn, build, and network with fellow developers.
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Events Content -->
+  <main class="tw-pb-12">
+    <div class="container">
+      <!-- Section Tabs -->
+      <div class="d-flex justify-content-center tw-mb-5 reveal">
+        <div class="btn-group" role="group" aria-label="Event categories">
+          <button type="button" class="section-tab active" data-section="upcoming">Upcoming Events</button>
+          <button type="button" class="section-tab" data-section="past">Past Events</button>
+        </div>
+      </div>
+      
+      <!-- Upcoming Events -->
+      <section id="upcoming-events" class="events-section">
+        <div class="text-center tw-mb-5 reveal">
+          <h3 class="tw-font-orbitron tw-text-2xl tw-font-bold tw-text-white">Upcoming Events</h3>
+          <p class="tw-text-[var(--muted)]">Mark your calendar for these exciting upcoming events</p>
+        </div>
+        
+        <div class="row g-4">
+          <!-- Event 1 -->
+          <div class="col-md-6 col-lg-4 reveal">
+            <div class="card neon-card tw-rounded-xl h-100">
+              <div class="card-img-top d-flex align-items-end justify-content-start p-3" style="height: 160px; background: linear-gradient(135deg, rgba(0,229,255,0.22) 0%, rgba(168,85,247,0.22) 100%);">
+                <span class="event-badge bg-white tw-text-brand tw-font-semibold">Sep 10, 2025</span>
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center tw-mb-2">
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,255,136,0.15)] tw-text-brand">Workshop</span>
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,229,255,0.15)] tw-text-accent">Virtual</span>
+                </div>
+                <h5 class="card-title tw-text-white">Web Dev Bootcamp</h5>
+                <p class="card-text tw-text-[var(--muted)]">Build a full-stack project in a day with mentors and like-minded developers.</p>
+                <ul class="tw-text-sm tw-text-[var(--muted)] tw-space-y-1">
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-clock tw-text-brand"></i>
+                    <span>10:00 AM - 4:00 PM</span>
+                  </li>
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-calendar tw-text-accent"></i>
+                    <span>September 10, 2025</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0 d-flex justify-content-between">
+                <a class="btn btn-outline-brand btn-sm tw-rounded-full" href="#rsvp">RSVP Now</a>
+                <a class="btn btn-sm tw-text-[var(--muted)] tw-rounded-full" href="#details">
+                  Details <i class="fa-solid fa-arrow-right tw-text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Event 2 -->
+          <div class="col-md-6 col-lg-4 reveal">
+            <div class="card neon-card tw-rounded-xl h-100">
+              <div class="card-img-top d-flex align-items-end justify-content-start p-3" style="height: 160px; background: linear-gradient(135deg, rgba(0,255,136,0.22) 0%, rgba(0,229,255,0.22) 100%);">
+                <span class="event-badge bg-white tw-text-brand tw-font-semibold">Sep 24, 2025</span>
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center tw-mb-2">
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,255,136,0.15)] tw-text-brand">Coding</span>
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(168,85,247,0.15)] tw-text-purple">In-person</span>
+                </div>
+                <h5 class="card-title tw-text-white">DSA Sprint</h5>
+                <p class="card-text tw-text-[var(--muted)]">Hands-on problem solving with C++ patterns and algorithms.</p>
+                <ul class="tw-text-sm tw-text-[var(--muted)] tw-space-y-1">
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-clock tw-text-brand"></i>
+                    <span>2:00 PM - 5:00 PM</span>
+                  </li>
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-calendar tw-text-accent"></i>
+                    <span>September 24, 2025</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0 d-flex justify-content-between">
+                <a class="btn btn-outline-brand btn-sm tw-rounded-full" href="#rsvp">RSVP Now</a>
+                <a class="btn btn-sm tw-text-[var(--muted)] tw-rounded-full" href="#details">
+                  Details <i class="fa-solid fa-arrow-right tw-text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Event 3 -->
+          <div class="col-md-6 col-lg-4 reveal">
+            <div class="card neon-card tw-rounded-xl h-100">
+              <div class="card-img-top d-flex align-items-end justify-content-start p-3" style="height: 160px; background: linear-gradient(135deg, rgba(168,85,247,0.22) 0%, rgba(0,255,136,0.22) 100%);">
+                <span class="event-badge bg-white tw-text-brand tw-font-semibold">Oct 08, 2025</span>
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center tw-mb-2">
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,229,255,0.15)] tw-text-accent">Workshop</span>
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(168,85,247,0.15)] tw-text-purple">In-person</span>
+                </div>
+                <h5 class="card-title tw-text-white">AI Tools Workshop</h5>
+                <p class="card-text tw-text-[var(--muted)]">Explore AI-assisted development workflows and tools.</p>
+                <ul class="tw-text-sm tw-text-[var(--muted)] tw-space-y-1">
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-clock tw-text-brand"></i>
+                    <span>11:00 AM - 2:00 PM</span>
+                  </li>
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-calendar tw-text-accent"></i>
+                    <span>October 08, 2025</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0 d-flex justify-content-between">
+                <a class="btn btn-outline-brand btn-sm tw-rounded-full" href="#rsvp">RSVP Now</a>
+                <a class="btn btn-sm tw-text-[var(--muted)] tw-rounded-full" href="#details">
+                  Details <i class="fa-solid fa-arrow-right tw-text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Past Events (initially hidden) -->
+      <section id="past-events" class="events-section" style="display: none;">
+        <div class="text-center tw-mb-5">
+          <h3 class="tw-font-orbitron tw-text-2xl tw-font-bold tw-text-white">Past Events</h3>
+          <p class="tw-text-[var(--muted)]">Relive our previous successful events</p>
+        </div>
+        
+        <div class="row g-4">
+          <!-- Past Event 1 -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card neon-card past-event-card tw-rounded-xl h-100">
+              <div class="card-img-top position-relative p-0" style="height: 250px;">
+                <img src="images/data-analytics-bootcamp_1.jpg" alt="Mini Data Analytics Bootcamp" style="height: 250px; width: 100%; object-fit: cover; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center tw-mb-2">
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,255,136,0.15)] tw-text-brand">Workshop</span>
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(168,85,247,0.15)] tw-text-purple">Virtual</span>
+                </div>
+                <h5 class="card-title tw-text-white">Mini Data Analytics Bootcamp</h5>
+                <p class="card-text tw-text-[var(--muted)]">Hands-on with 2 real-time projects during the workshop</p>
+                <ul class="tw-text-sm tw-text-[var(--muted)] tw-space-y-1">
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-clock tw-text-brand"></i>
+                    <span>4 – 7 PM (Saturday: 9 – 12 PM)</span>
+                  </li>
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-calendar tw-text-accent"></i>
+                    <span>20th – 23rd August 2025</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0">
+                <a class="btn btn-sm tw-text-[var(--muted)] tw-rounded-full w-100 text-center" href="past_event1_Data Analytics.html">
+                  View All<i class="fa-solid fa-images tw-text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Past Event 2 -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card neon-card past-event-card tw-rounded-xl h-100">
+              <div class="card-img-top position-relative p-0" style="height: 250px;">
+                <img src="images/Power_BI_1.jpg" alt="POWER BI Bootcamp" style="height: 250px; width: 100%; object-fit: cover; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center tw-mb-2">
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,229,255,0.15)] tw-text-accent">Workshop</span>
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,255,136,0.15)] tw-text-brand">Virtual</span>
+                </div>
+                <h5 class="card-title tw-text-white">All about POWER BI</h5>
+                <p class="card-text tw-text-[var(--muted)]">Learn Power BI Basics, Data Import, Transformations, Visualizations, DAX, and Dashboard Building!</p>
+                <ul class="tw-text-sm tw-text-[var(--muted)] tw-space-y-1">
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-clock tw-text-brand"></i>
+                    <span>15 hours</span>
+                  </li>
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-calendar tw-text-accent"></i>
+                    <span>2nd & 3rd May</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0">
+                <a class="btn btn-sm tw-text-[var(--muted)] tw-rounded-full w-100 text-center" href="past_event2_POWER BI.html">
+                  View All <i class="fa-solid fa-images tw-text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Past Event 3 -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card neon-card past-event-card tw-rounded-xl h-100">
+              <div class="card-img-top position-relative p-0" style="height: 250px;">
+                <img src="images/Hackathon_1.jpg" alt="InnovateX Cup Hackathon" style="height: 250px; width: 100%; object-fit: cover; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center tw-mb-2">
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(168,85,247,0.15)] tw-text-purple">Hackathon</span>
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,229,255,0.15)] tw-text-accent">In-person</span>
+                </div>
+                <h5 class="card-title tw-text-white">InnovateX Cup Hackathon</h5>
+                <p class="card-text tw-text-[var(--muted)]">Imagine it.. Build it.. Live it..</p>
+                <ul class="tw-text-sm tw-text-[var(--muted)] tw-space-y-1">
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-solid fa-indian-rupee-sign tw-text-accent"></i>
+                    <span>₹10,000</span>
+                  </li>
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-calendar tw-text-accent"></i>
+                    <span>16th & 17th November</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0">
+                <a class="btn btn-sm tw-text-[var(--muted)] tw-rounded-full w-100 text-center" href="past_event3_InnovateX Cup Hackathon.html">
+                  View All <i class="fa-solid fa-images tw-text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <br><br>
+        <div class="row g-4">
+          <!-- Past Event 4 -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card neon-card past-event-card tw-rounded-xl h-100">
+              <div class="card-img-top position-relative p-0" style="height: 250px;">
+                <img src="images/Linked_in_1.jpg" alt="Mini Data Analytics Bootcamp" style="height: 250px; width: 100%; object-fit: cover; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center tw-mb-2">
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,255,136,0.15)] tw-text-brand">Workshop</span>
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(168,85,247,0.15)] tw-text-purple">Virtual</span>
+                </div>
+                <h5 class="card-title tw-text-white">LinkedIn Workshop</h5>
+                <p class="card-text tw-text-[var(--muted)]">Taking Your LinkedIn to the Next Level!</p>
+                <ul class="tw-text-sm tw-text-[var(--muted)] tw-space-y-1">
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-solid fa-location-dot tw-text-accent"></i>
+                    <span> CCF Lab, Old Building, D.Y. Patil College of Engineering & Technology (DYPCET)</span>
+                  </li>
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-calendar tw-text-accent"></i>
+                    <span>10th October 2024</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0">
+                <a class="btn btn-sm tw-text-[var(--muted)] tw-rounded-full w-100 text-center" href="past_event4_linkedin.html">
+                  View All<i class="fa-solid fa-images tw-text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Past Event 5 -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card neon-card past-event-card tw-rounded-xl h-100">
+              <div class="card-img-top position-relative p-0" style="height: 250px;">
+                <img src="images/Azure_devops_1.jpg" alt="POWER BI Bootcamp" style="height: 250px; width: 100%; object-fit: cover; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center tw-mb-2">
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,229,255,0.15)] tw-text-accent">Workshop</span>
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,255,136,0.15)] tw-text-brand">Virtual</span>
+                </div>
+                <h5 class="card-title tw-text-white">From Code to Cloud</h5>
+                <p class="card-text tw-text-[var(--muted)]">Automating Deployments with Azure DevOps workshop! Unlock the power of Azure DevOps to streamline development</p>
+                <ul class="tw-text-sm tw-text-[var(--muted)] tw-space-y-1">
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-solid fa-indian-rupee-sign tw-text-accent"></i>
+                    <span>150</span>
+                  </li>
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-calendar tw-text-accent"></i>
+                    <span>April 15th & 16th</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0">
+                <a class="btn btn-sm tw-text-[var(--muted)] tw-rounded-full w-100 text-center" href="past_event5_Azure_DevOps.html">
+                  View All <i class="fa-solid fa-images tw-text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Past Event 6 -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card neon-card past-event-card tw-rounded-xl h-100">
+              <div class="card-img-top position-relative p-0" style="height: 250px;">
+                <img src="images/link_in_1.jpg" alt="InnovateX Cup Hackathon" style="height: 250px; width: 100%; object-fit: cover; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center tw-mb-2">
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(168,85,247,0.15)] tw-text-purple">Workshop</span>
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,229,255,0.15)] tw-text-accent">Virtual</span>
+                </div>
+                <h5 class="card-title tw-text-white">What is LinkedIn?</h5>
+                <p class="card-text tw-text-[var(--muted)]">Creating an effective LinkedIn profile and Showcasing your portfolio and projects</p>
+                <ul class="tw-text-sm tw-text-[var(--muted)] tw-space-y-1">
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-clock tw-text-brand"></i>
+                    <span>11:15 AM</span>
+                  </li>
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-calendar tw-text-accent"></i>
+                    <span>20th March 2024</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0">
+                <a class="btn btn-sm tw-text-[var(--muted)] tw-rounded-full w-100 text-center" href="past_event6_linkedIn.html">
+                  View All <i class="fa-solid fa-images tw-text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <br><br>
+        <div class="row g-4">
+          <!-- Past Event 7 -->
+          <div class="col-md-6 col-lg-4">
+            <div class="card neon-card past-event-card tw-rounded-xl h-100">
+              <div class="card-img-top position-relative p-0" style="height: 250px;">
+                <img src="images/Github_1.jpg" alt="Mini Data Analytics Bootcamp" style="height: 250px; width: 100%; object-fit: cover; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem;">
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center tw-mb-2">
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(0,255,136,0.15)] tw-text-brand">Workshop</span>
+                  <span class="badge rounded-pill px-2 py-1 tw-bg-[rgba(168,85,247,0.15)] tw-text-purple">Virtual</span>
+                </div>
+                <h5 class="card-title tw-text-white">Git and GitHub Workshop</h5>
+                <p class="card-text tw-text-[var(--muted)]">Fully offline mode Hands-on Workshop!</p>
+                <ul class="tw-text-sm tw-text-[var(--muted)] tw-space-y-1">
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-clock tw-text-brand"></i>
+                    <span> 4:00 PM to 6:00 PM</span>
+                  </li>
+                  <li class="tw-flex tw-items-center tw-gap-2">
+                    <i class="fa-regular fa-calendar tw-text-accent"></i>
+                    <span>January 24, 2024</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer bg-transparent border-0 pt-0">
+                <a class="btn btn-sm tw-text-[var(--muted)] tw-rounded-full w-100 text-center" href="past_event7_git&github.html">
+                  View All<i class="fa-solid fa-images tw-text-xs"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+      </section>
+      
+      <!-- Newsletter CTA -->
+      <div class="tw-mt-10 tw-pt-5 tw-border-t tw-border-[rgba(0,229,255,0.2)]">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center reveal">
+            <h4 class="tw-font-orbitron tw-text-xl tw-text-white">Never Miss an Event</h4>
+            <p class="tw-text-[var(--muted)] tw-mb-4">Subscribe to our newsletter to stay updated with upcoming events and workshops</p>
+            
+            <form class="d-flex tw-gap-2 justify-content-center flex-column flex-sm-row">
+              <input type="email" class="form-control tw-bg-transparent tw-text-white tw-border-[rgba(0,229,255,0.4)] tw-rounded-lg tw-max-w-sm" placeholder="Your email address" required />
+              <button type="submit" class="btn btn-brand tw-rounded-lg tw-px-4">Subscribe</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="tw-pt-5">
+    <div class="container tw-pb-3">
+      <div class="row gy-4">
+        <div class="col-lg-6">
+          <div class="tw-flex tw-items-center tw-gap-2 tw-mb-2">
+            <span class="tw-inline-flex tw-items-center tw-justify-center tw-w-9 tw-h-9 tw-rounded-lg tw-bg-[rgba(0,229,255,0.12)] tw-border tw-border-[rgba(0,229,255,0.25)] tw-text-accent">M</span>
+            <span class="tw-text-white tw-font-semibold tw-text-lg">MLSA</span>
+          </div>
+          <p class="tw-text-[var(--muted)] tw-mb-0">Student-led community hosting events, workshops, and projects to level up skills and build connections in tech.</p>
+        </div>
+        <div class="col-lg-6">
+          <h6 class="tw-text-white tw-mb-2">Connect with us</h6>
+          <div class="tw-flex tw-gap-3 tw-mb-3">
+            <a class="tw-text-accent" href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a class="tw-text-purple" href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a class="tw-text-brand" href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+          <p class="tw-text-[var(--muted)] tw-mb-0">Email: <a class="tw-text-white" href="mailto:contact@mlsa.com">contact@mlsa.com</a></p>
+        </div>
+      </div>
+      <hr class="border-white border-opacity-25 my-4">
+      <div class="tw-flex tw-justify-between tw-items-center tw-text-[var(--muted)] tw-text-xs">
+        <span>© 2025 MLSA</span>
+        <span>Built with Bootstrap + Tailwind</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Navbar scroll effect
+    const navbar = document.querySelector('.navbar');
+    const onScroll = () => {
+      if (window.scrollY > 10) navbar.classList.add('nav-scrolled');
+      else navbar.classList.remove('nav-scrolled');
+    };
+    window.addEventListener('scroll', onScroll);
+    onScroll();
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -80px 0px' });
+    reveals.forEach(el => revealObserver.observe(el));
+
+    // Section tabs functionality
+    const sectionTabs = document.querySelectorAll('.section-tab');
+    const eventSections = {
+      'upcoming': document.getElementById('upcoming-events'),
+      'past': document.getElementById('past-events')
+    };
+    
+    sectionTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetSection = tab.dataset.section;
+        
+        // Update active tab
+        sectionTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Show/hide sections
+        for (const section in eventSections) {
+          if (section === targetSection) {
+            eventSections[section].style.display = 'block';
+            // Trigger reveal animation for new content
+            setTimeout(() => {
+              const newReveals = eventSections[section].querySelectorAll('.reveal');
+              newReveals.forEach(el => {
+                el.classList.add('in');
+              });
+            }, 50);
+          } else {
+            eventSections[section].style.display = 'none';
+          }
+        }
+      });
+    });
+
+    // Matrix rain background (Canvas)
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    const matrixChars = 'アァカサタナハマヤャラワガザダバパABCDEFGHIJKLMNOＰＱＲＳＴＵＶＷＸＹＺ0123456789<>\\{}[]()/#$%&*_+';
+    let fontSize = 16;
+    let columns, drops;
+
+    function resizeMatrix() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      fontSize = Math.max(14, Math.floor(window.innerWidth / 90));
+      columns = Math.floor(canvas.width / fontSize);
+      drops = new Array(columns).fill(1);
+      ctx.font = fontSize + 'px JetBrains Mono, monospace';
+    }
+    function drawMatrix() {
+      // Faded trail
+      ctx.fillStyle = 'rgba(10, 15, 28, 0.12)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < drops.length; i++) {
+        const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+        // Cycle neon: green -> cyan -> purple
+        const r = i % 3;
+        const color = r === 0 ? 'rgba(0,255,136,0.9)' : r === 1 ? 'rgba(0,229,255,0.9)' : 'rgba(168,85,247,0.9)';
+        ctx.fillStyle = color;
+        ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+      matrixRAF = requestAnimationFrame(drawMatrix);
+    }
+
+    let matrixRAF = null;
+    function startMatrix() {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        resizeMatrix();
+        if (matrixRAF) cancelAnimationFrame(matrixRAF);
+        matrixRAF = requestAnimationFrame(drawMatrix);
+      }
+    }
+    window.addEventListener('resize', startMatrix);
+    startMatrix();
+
+    // Floating code snippets
+    const floatHost = document.getElementById('code-floats');
+    const snippets = [
+      'git push origin main',
+      'npm run dev',
+      'console.log("MLSA")',
+      '<div class="card">',
+      'kubectl get pods',
+      'pip install fastapi',
+      'az login',
+      'SELECT * FROM members;',
+      'curl -sL ...',
+      'npx create-next-app',
+      'docker compose up',
+      'gh repo clone org/app'
+    ];
+    function spawnFloat() {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) return;
+      const el = document.createElement('span');
+      el.className = 'code-float';
+      el.textContent = snippets[Math.floor(Math.random() * snippets.length)];
+
+      const startX = Math.random() * window.innerWidth * 0.9;
+      const startY = window.innerHeight + Math.random() * 200;
+      el.style.left = startX + 'px';
+      el.style.top = startY + 'px';
+
+      const dur = 14000 + Math.random() * 12000;
+      el.style.animationDuration = dur + 'ms';
+      el.style.opacity = String(0.4 + Math.random() * 0.5);
+      el.style.fontSize = (0.75 + Math.random() * 0.6) + 'rem';
+      el.style.color = Math.random() > 0.5 ? 'rgba(0,229,255,0.85)' : 'rgba(0,255,136,0.85)';
+
+      floatHost.appendChild(el);
+      setTimeout(() => { el.remove(); }, dur + 200);
+    }
+    let floatInterval = null;
+    function startFloats() {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        if (floatInterval) clearInterval(floatInterval);
+        floatInterval = setInterval(spawnFloat, 900);
+      }
+    }
+    startFloats();
+    window.addEventListener('visibilitychange', () => {
+      if (document.hidden) { if (floatInterval) clearInterval(floatInterval); }
+      else startFloats();
+    });
+  </script>
+</body>
+</html>

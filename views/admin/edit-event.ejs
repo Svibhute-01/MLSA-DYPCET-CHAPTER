@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit Event - MLSA DYPCET</title>
+  <link rel="icon" href="/assets/mlsa.jpeg" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      prefix: 'tw-',
+      corePlugins: { preflight: false },
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+            orbitron: ['Orbitron', 'JetBrains Mono', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            bg: '#0a0f1c',
+            brand: '#00ff88',
+            accent: '#00e5ff',
+            purple: '#a855f7'
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    body {
+      background-color: #0a0f1c;
+      color: white;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background-image:
+        linear-gradient(rgba(10, 15, 28, 0.9) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(10, 15, 28, 0.9) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    .tw-panel {
+      background: linear-gradient(128deg, rgba(13,229,255,.07) 0%, rgba(168,85,247,.08) 100%);
+      border-radius: 1.1rem;
+      box-shadow: 0 2px 30px 0 rgba(13,229,255,.08);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-brand {
+      background-color: #0de5ff;
+      color: #101727;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      border-radius: 0.6rem;
+      box-shadow: 0 0 12px rgba(13,229,255,0.12);
+      transition: all 0.2s;
+    }
+
+    .btn-brand:hover {
+      background-color: #a855f7;
+      color: white;
+      box-shadow: 0 0 48px #a855f7a9;
+      transform: translateY(-2px);
+    }
+
+    .btn-delete {
+      background-color: #ff3b3b;
+      color: white;
+      border-radius: 0.6rem;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      letter-spacing: .05em;
+      transition: 0.2s;
+    }
+
+    .btn-delete:hover {
+      background-color: #ff6363;
+      box-shadow: 0 0 20px rgba(255, 59, 59, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .form-control, .form-select {
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid #a855f7;
+      border-radius: 8px;
+      color: white;
+      padding: 0.75rem 1rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #0de5ff;
+      box-shadow: 0 0 0 .18rem rgba(13,229,255,.22);
+      background-color: #21294a;
+      color: #fff;
+    }
+
+    .tw-header {
+      font-family: 'Orbitron', 'JetBrains Mono', sans-serif;
+      font-weight: 800;
+      letter-spacing: .08em;
+      color: #0de5ff;
+      text-shadow: 0 0 24px #0de5ffa1;
+      font-size: 1.8rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <form action="/admin/events/edit/<%= event.id %>" 
+        method="POST" 
+        enctype="multipart/form-data" 
+        class="p-4 tw-panel tw-rounded-xl"
+        style="width: 90%; max-width: 700px;">
+    
+    <h2 class="tw-header mb-4 text-center">Edit Event Information</h2>
+    
+    <div class="form-grid">
+      <div class="mb-3">
+        <label class="form-label">Event Title</label>
+        <input type="text" class="form-control" name="eventTitle" value="<%= event.title %>" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Type</label>
+        <select class="form-select" name="eventType" required>
+          <option value="Workshop" <%= event.type === 'Workshop' ? 'selected' : '' %>>Workshop</option>
+          <option value="Coding" <%= event.type === 'Coding' ? 'selected' : '' %>>Coding</option>
+          <option value="Hackathon" <%= event.type === 'Hackathon' ? 'selected' : '' %>>Hackathon</option>
+          <option value="Webinar" <%= event.type === 'Webinar' ? 'selected' : '' %>>Webinar</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Mode</label>
+        <select class="form-select" name="eventMode" required>
+          <option value="Virtual" <%= event.mode === 'Virtual' ? 'selected' : '' %>>Virtual</option>
+          <option value="In-person" <%= event.mode === 'In-person' ? 'selected' : '' %>>In-person</option>
+          <option value="Hybrid" <%= event.mode === 'Hybrid' ? 'selected' : '' %>>Hybrid</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Date</label>
+        <input type="date" class="form-control" name="eventDate" value="<%= event.date.toISOString().split('T')[0] %>" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Time</label>
+        <input type="text" class="form-control" name="eventTime" value="<%= event.time %>" required>
+      </div>
+
+      <div class="mb-3 full-width">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" name="eventDescription" rows="3" required><%= event.description %></textarea>
+      </div>
+
+      <div class="mb-3 full-width">
+        <label class="form-label">Venue</label>
+        <input type="text" class="form-control" name="eventVenue" value="<%= event.venue %>" required>
+      </div>
+
+      <div class="mb-3 full-width">
+        <label class="form-label">Event Image</label>
+        <input type="file" class="form-control" name="eventImage" accept="image/*">
+        <% if (event.image_url) { %>
+          <p class="form-text mt-1">Current image: <%= event.image_url %></p>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <button type="submit" class="btn btn-brand w-50 me-2">Save Changes</button>
+      <button type="button" class="btn btn-delete w-50" onclick="confirmDelete()">Delete Event</button>
+    </div>
+  </form>
+
+  <form id="deleteForm" action="/admin/events/delete/<%= event.id %>" method="POST" style="display:none;"></form>
+
+  <script>
+    function confirmDelete() {
+      if (confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+        document.getElementById('deleteForm').submit();
+      }
+    }
+  </script>
+</body>
+</html>

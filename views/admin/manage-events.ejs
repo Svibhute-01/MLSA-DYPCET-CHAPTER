@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      prefix: 'tw-',
+      corePlugins: { preflight: false },
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['JetBrains Mono', 'monospace'],
+            orbitron: ['Orbitron', 'mono'],
+          },
+          colors: {
+            bg: '#0a0f1c',
+            brand: '#00ff88',
+            accent: '#00e5ff',
+            purple: '#a855f7'
+          },
+          boxShadow: {
+            neon: '0 0 0.5rem rgba(0,255,136,0.7),0 0 1.25rem rgba(0,229,255,0.4)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <title>Manage Events - MLSA DYPCET</title>
+  <link rel="icon" href="assets/mlsa.jpeg">
+</head>
+<body class="tw-bg-bg tw-text-white tw-font-mono">
+
+  <!-- Topbar -->
+  <div class="tw-bg-[rgba(10,15,28,0.85)] tw-backdrop-blur-md tw-p-4 tw-flex tw-justify-between tw-items-center tw-border-b tw-border-[rgba(0,229,255,0.1)]">
+    <span class="tw-font-orbitron tw-text-xl">MLSA Admin Dashboard</span>
+    <a href="/admin/login" class="btn btn-brand tw-rounded-full"><i class="fa-solid fa-user-shield me-1"></i> Logout</a>
+  </div>
+
+  <div class="tw-flex tw-min-h-screen">
+
+    <!-- Sidebar -->
+    <div class="tw-w-60 tw-bg-[rgba(14,21,48,0.9)] tw-p-4 tw-flex-shrink-0">
+      <a href="/admin/dashboard" class="tw-block tw-py-2 tw-px-3 tw-mb-2 tw-rounded hover:tw-bg-[rgba(0,229,255,0.1)] tw-text-[#94a3b8] hover:tw-text-brand">
+        <i class="fa-solid fa-gauge me-2"></i> Dashboard
+      </a>
+      <a href="/admin/events/new" class="tw-block tw-py-2 tw-px-3 tw-mb-2 tw-rounded hover:tw-bg-[rgba(0,229,255,0.1)] tw-text-[#94a3b8] hover:tw-text-brand">
+        <i class="fa-solid fa-calendar-plus me-2"></i> Add Event
+      </a>
+      <a href="/admin/events/manage" class="tw-block tw-py-2 tw-px-3 tw-mb-2 tw-rounded hover:tw-bg-[rgba(0,229,255,0.1)] tw-text-[#94a3b8] hover:tw-text-brand">
+        <i class="fa-solid fa-calendar-days me-2"></i> Manage Events
+      </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="tw-flex-1 tw-p-6 tw-overflow-auto">
+      <h2 class="tw-font-orbitron tw-text-3xl tw-mb-4">Manage Events</h2>
+
+      <% if (events.length > 0) { %>
+        <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
+          <% events.forEach(event => { %>
+            <div class="tw-bg-[rgba(14,21,48,0.7)] tw-rounded-xl tw-shadow-neon tw-p-4 tw-flex tw-flex-col">
+              <% if (event.image_url) { %>
+                <img src="<%= event.image_url %>" alt="<%= event.title %>" class="tw-w-full tw-h-40 tw-object-cover tw-rounded-lg tw-mb-3">
+              <% } %>
+              <h4 class="tw-font-orbitron tw-text-xl tw-mb-1"><%= event.title %></h4>
+              <p class="tw-text-[var(--muted)] tw-mb-2"><%= event.description %></p>
+              <p class="tw-text-[var(--muted)] tw-text-sm tw-mb-2">
+                <i class="fa-solid fa-calendar"></i> <%= new Date(event.date).toDateString() %> | <i class="fa-solid fa-clock"></i> <%= event.time %>
+              </p>
+              <p class="tw-text-[var(--muted)] tw-text-sm tw-mb-3">
+                <i class="fa-solid fa-map-marker-alt"></i> <%= event.venue %>
+              </p>
+              <div class="tw-mt-auto tw-flex tw-gap-2">
+                <a href="/admin/events/edit/<%= event.id %>" class="btn btn-brand btn-sm tw-flex-1"><i class="fa-solid fa-pen-to-square me-1"></i> Edit</a>
+                <form action="/admin/events/delete/<%= event.id %>" method="POST" class="tw-flex-1">
+                  <button type="submit" class="btn btn-outline-danger btn-sm tw-w-full"><i class="fa-solid fa-trash me-1"></i> Delete</button>
+                </form>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="tw-text-[var(--muted)] tw-text-center tw-mt-6">No events found. <a href="/admin/events/new" class="tw-text-brand underline">Add a new event</a>.</p>
+      <% } %>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="tw-p-4 tw-text-center tw-text-[var(--muted)] tw-border-t tw-border-[rgba(0,229,255,0.1)]">
+    2025 MLSA DYPCET - Admin Dashboard
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
