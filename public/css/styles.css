@@ -563,3 +563,16 @@ footer:before {
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to bottom, var(--accent), var(--brand));
 }
+
+
+.see-more-wrapper {
+  margin-top: 3rem;     /* space from cards above */
+  margin-bottom: 3rem;  /* space from next section */
+  text-align: center;
+}
+
+.see-more-wrapper .btn {
+  padding: 10px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+}

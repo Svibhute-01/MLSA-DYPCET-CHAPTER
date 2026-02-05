@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      prefix: 'tw-',
+      corePlugins: { preflight: false },
+      theme: {
+        extend: {
+          fontFamily: {
+            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+            orbitron: ['Orbitron', 'JetBrains Mono', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            bg: '#0a0f1c',
+            brand: '#00ff88',
+            accent: '#00e5ff',
+            purple: '#a855f7'
+          },
+          boxShadow: {
+            neon: '0 0 0.5rem rgba(0,255,136,0.7), 0 0 1.25rem rgba(0,229,255,0.4), inset 0 0 0 rgba(0,0,0,0)',
+            soft: '0 10px 30px rgba(0,0,0,0.25)',
+            lift: '0 16px 40px rgba(0,255,136,0.18)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@500;700;800&display=swap" rel="stylesheet" />
+
+  <title>Our Team | MLSA DYPCET</title>
+  <link rel="icon" href="/assets/mlsa.jpeg">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body class="tw-bg-bg tw-text-white tw-antialiased">
+
+  <!-- Navbar -->
+  
+
+  <!-- Hero Section -->
+  <header class="tw-py-28 tw-text-center">
+    <h1 class="tw-font-orbitron tw-text-5xl tw-font-bold">Our Team</h1>
+    <p class="tw-text-[rgba(255,255,255,0.6)] tw-mt-2 tw-max-w-2xl tw-mx-auto">
+      Meet the passionate students driving MLSA DYPCET forward
+    </p>
+  </header>
+
+  <!-- Team Section -->
+  <section class="tw-py-16 tw-container tw-mx-auto tw-px-4">
+    <div class="tw-flex tw-flex-wrap tw-justify-center tw-gap-8">
+      <% team.forEach(member => { %>
+        <div class="tw-w-64 tw-bg-[rgba(14,21,48,0.6)] tw-border tw-border-[rgba(0,229,255,0.25)] tw-shadow-neon tw-rounded-xl tw-flex tw-flex-col tw-items-center tw-py-6 hover:tw-scale-105 tw-transition-transform tw-duration-300">
+          
+          <!-- Circular Image -->
+          <div class="tw-w-32 tw-h-32 tw-rounded-full tw-overflow-hidden tw-border-2 tw-border-brand tw-mb-4">
+            <img src="<%= member.photo_url || '/assets/default-profile.png' %>" alt="<%= member.name %>" class="tw-w-full tw-h-full tw-object-cover" />
+          </div>
+
+          <!-- Content -->
+          <div class="tw-text-center tw-px-4">
+            <h6 class="tw-text-white tw-font-semibold tw-mb-1 tw-text-lg"><%= member.name %></h6>
+            <p class="tw-text-brand tw-text-sm tw-mb-1"><%= member.role %></p>
+            <p class="tw-text-[rgba(255,255,255,0.6)] tw-text-xs"><%= member.info %></p>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <!-- Back to Home Button -->
+    <div class="tw-text-center tw-mt-12">
+      <a href="/" class="tw-inline-block tw-border tw-border-accent tw-text-accent tw-px-6 tw-py-2 tw-rounded-full hover:tw-bg-accent hover:tw-text-bg tw-transition-colors tw-duration-300">
+        ← Back to Home
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+ 
+
+</body>
+
+</html>

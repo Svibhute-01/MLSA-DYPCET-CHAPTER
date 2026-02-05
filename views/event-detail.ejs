@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title><%= event.title %> | MLSA DYPCET</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Tailwind (prefixed, no reset) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      prefix: 'tw-',
+      corePlugins: { preflight: false },
+      theme: {
+        extend: {
+          colors: {
+            brand: '#00ff88',
+            accent: '#00e5ff',
+            purple: '#a855f7'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Styles -->
+  <style>
+    body {
+      background:
+        radial-gradient(circle at 15% 20%, rgba(0,229,255,0.12), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(168,85,247,0.12), transparent 40%),
+        linear-gradient(180deg, #070b17, #0a0f1c);
+      min-height: 100vh;
+    }
+
+    .neon-card {
+      background: rgba(14, 21, 48, 0.75);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      box-shadow: 0 0 30px rgba(0,255,136,0.18);
+      backdrop-filter: blur(12px);
+    }
+
+    .glow-orb {
+      position: fixed;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.35;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .glow-1 {
+      background: #00e5ff;
+      top: -120px;
+      left: -120px;
+    }
+
+    .glow-2 {
+      background: #a855f7;
+      bottom: -120px;
+      right: -120px;
+    }
+  </style>
+</head>
+
+<body class="tw-text-white tw-relative tw-overflow-x-hidden">
+
+<!-- Ambient Glow -->
+<div class="glow-orb glow-1"></div>
+<div class="glow-orb glow-2"></div>
+
+<div class="container tw-py-20 tw-relative tw-z-10">
+
+  <div class="row justify-content-center">
+    <div class="col-lg-9 col-xl-8">
+
+      <div class="neon-card tw-rounded-2xl tw-overflow-hidden">
+
+        <!-- Event Image -->
+        <% if (event.image_url) { %>
+          <img 
+            src="<%= event.image_url %>" 
+            alt="<%= event.title %>"
+            class="tw-w-full tw-h-80 tw-object-cover"
+          >
+        <% } %>
+
+        <!-- Content -->
+        <div class="tw-p-5 tw-p-md-6">
+
+          <h1 class="tw-font-orbitron tw-text-3xl tw-md:text-4xl tw-font-bold">
+            <%= event.title %>
+          </h1>
+
+          <!-- Meta Info -->
+          <div class="tw-flex tw-flex-wrap tw-gap-4 tw-text-sm tw-text-gray-400 tw-mt-3">
+
+            <span>
+              <i class="fa-solid fa-calendar tw-text-brand"></i>
+              <%= new Date(event.date).toDateString() %>
+            </span>
+
+            <% if (event.venue) { %>
+              <span>
+                <i class="fa-solid fa-location-dot tw-text-accent"></i>
+                <%= event.venue %>
+              </span>
+            <% } %>
+
+            <% if (event.mode) { %>
+              <span>
+                <i class="fa-solid fa-video tw-text-purple"></i>
+                <%= event.mode %>
+              </span>
+            <% } %>
+
+          </div>
+
+          <hr class="tw-my-4 tw-border-white/20">
+
+          <!-- Description -->
+          <p class="tw-text-gray-300 tw-leading-relaxed tw-text-base">
+            <%= event.description %>
+          </p>
+
+          <!-- Back Button -->
+          <div class="tw-mt-6">
+            <a href="/"
+               class="btn btn-outline-info btn-sm tw-rounded-full tw-px-4">
+              ← Back to Home
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

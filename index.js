@@ -2,8 +2,12 @@ import express from "express";
 import bodyParser from "body-parser";
 import session from "express-session";
 import passport from "passport";
+import teamRoutes from "./routes/team.js";
+
+
 
 import adminRoutes from "./routes/admin.js";
+import eventRoutes from "./routes/events.js";
 import { db } from "./db.js"; // ✅ make sure this matches your export
 
 const app = express();
@@ -43,10 +47,23 @@ app.use((req, res, next) => {
 // ==============================
 app.use("/admin", adminRoutes);
 
+
+app.use("/events", eventRoutes);
+
+app.use("/team", teamRoutes);
+
+
 // 🏠 Home route
 app.get("/", async (req, res) => {
   try {
-    const eventsResult = await db.query("SELECT * FROM events ORDER BY date ASC");
+    const eventsResult = await db.query(
+  "SELECT * FROM events ORDER BY date ASC"
+);
+
+const recentEventsResult = await db.query(
+  "SELECT * FROM recent_events ORDER BY date DESC LIMIT 3"
+);
+
     const teamResult = await db.query("SELECT * FROM team_members ORDER BY id ASC");
 
     // Optional: join with registration info if needed
@@ -62,11 +79,13 @@ app.get("/", async (req, res) => {
       };
     });
 
-    res.render("index", {
-      events: eventsWithRegistration,
-      team: teamResult.rows,
-      user: req.user
-    });
+  res.render("index", {
+  events: eventsWithRegistration,
+  recentEvents: recentEventsResult.rows,
+  team: teamResult.rows,
+  user: req.user
+});
+
   } catch (err) {
     console.error("Error fetching home page data:", err);
     res.status(500).send("Error loading home page");

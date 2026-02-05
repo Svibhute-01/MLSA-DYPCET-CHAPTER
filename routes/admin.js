@@ -16,10 +16,9 @@ passport.use(
     { usernameField: "username", passwordField: "password" },
     async (username, password, done) => {
       try {
-        const result = await db.query(
-          "SELECT * FROM users WHERE email = $1",
-          [username]
-        );
+        const result = await db.query("SELECT * FROM users WHERE email = $1", [
+          username,
+        ]);
 
         if (result.rows.length === 0) {
           return done(null, false);
@@ -36,8 +35,8 @@ passport.use(
       } catch (err) {
         return done(err);
       }
-    }
-  )
+    },
+  ),
 );
 
 passport.serializeUser((user, done) => done(null, user.id));
@@ -70,7 +69,7 @@ router.post(
   passport.authenticate("local", {
     successRedirect: "/admin/dashboard",
     failureRedirect: "/admin/login",
-  })
+  }),
 );
 
 router.get("/logout", (req, res) => {
@@ -96,11 +95,89 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+//Add Recent events
+
+router.get("/recent-events/new", ensureAuthenticated, (req, res) => {
+  res.render("admin/add_recent_event");
+});
+
+router.post(
+  "/recent-events/add",
+  ensureAuthenticated,
+  upload.single("eventImage"),
+  async (req, res) => {
+    try {
+      const {
+        eventTitle,
+        eventType,
+        eventMode,
+        eventDate,
+        eventTime,
+        eventDescription,
+        eventVenue,
+      } = req.body;
+
+      const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
+
+      await db.query(
+        `INSERT INTO recent_events
+   (title, type, mode, date, time, description, venue, image_url)
+   VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
+        [
+          eventTitle,
+          eventType,
+          eventMode,
+          eventDate,
+          eventTime,
+          eventDescription,
+          eventVenue,
+          imagePath,
+        ],
+      );
+
+      res.redirect("/admin/dashboard");
+    } catch (err) {
+      console.error("Error adding recent event:", err);
+      res.status(500).send("Failed to add recent event");
+    }
+  },
+);
+
+
+router.get("/recent-events/manage", ensureAuthenticated, async (req, res) => {
+  try {
+    const result = await db.query(
+      "SELECT * FROM recent_events ORDER BY date DESC"
+    );
+
+    res.render("admin/manage-recent-events", {
+      events: result.rows,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error loading recent events");
+  }
+});
+
+
+router.post(
+  "/recent-events/delete/:id",
+  ensureAuthenticated,
+  async (req, res) => {
+    await db.query(
+      "DELETE FROM recent_events WHERE id = $1",
+      [req.params.id]
+    );
+
+    res.redirect("/admin/recent-events/manage");
+  }
+);
+
 /* =========================
    ➕ Add Event
 ========================= */
 router.get("/events/new", ensureAuthenticated, (req, res) =>
-  res.render("admin/add_event")
+  res.render("admin/add_event"),
 );
 
 router.post(
@@ -133,11 +210,11 @@ router.post(
         eventDescription,
         eventVenue,
         imagePath,
-      ]
+      ],
     );
 
     res.redirect("/admin/dashboard");
-  }
+  },
 );
 
 /* =========================
@@ -157,7 +234,7 @@ router.post("/events/delete/:id", ensureAuthenticated, async (req, res) => {
    👥 Team Routes
 ========================= */
 router.get("/team/new", ensureAuthenticated, (req, res) =>
-  res.render("admin/add-team")
+  res.render("admin/add-team"),
 );
 
 router.post(
@@ -171,75 +248,16 @@ router.post(
     await db.query(
       `INSERT INTO team_members (name, role, info, photo_url)
        VALUES ($1,$2,$3,$4)`,
-      [memberName, memberRole, memberInfo, photoPath]
+      [memberName, memberRole, memberInfo, photoPath],
     );
 
     res.redirect("/admin/dashboard");
-  }
+  },
 );
 
 router.get("/team/manage", ensureAuthenticated, async (req, res) => {
   const members = await db.query("SELECT * FROM team_members");
   res.render("admin/manage-team", { members: members.rows });
 });
-
-/* =====================================================
-   🔥 EVENT REGISTRATION ROUTES
-===================================================== */
-
-/* ➕ Create Registration */
-router.get("/event-registration/new", ensureAuthenticated, async (req, res) => {
-  const events = await db.query("SELECT id, title FROM events");
-  res.render("admin/event-registration-new", { events: events.rows });
-});
-
-router.post(
-  "/event-registration/add",
-  ensureAuthenticated,
-  upload.single("poster"), // <-- match the input field name
-  async (req, res) => {
-    const { eventId, registrationLink, isActive } = req.body;
-    const posterUrl = req.file ? `/uploads/${req.file.filename}` : null;
-
-    await db.query(
-      `INSERT INTO event_registrations
-       (event_id, google_form_link, poster_url, is_active)
-       VALUES ($1,$2,$3,$4)`,
-      [eventId, registrationLink, posterUrl, isActive === "true"]
-    );
-
-    res.redirect("/admin/event-registration/manage");
-  }
-);
-
-
-/* 📋 Manage Registrations */
-router.get(
-  "/event-registration/manage",
-  ensureAuthenticated,
-  async (req, res) => {
-    const registrations = await db.query(`
-      SELECT er.*, e.title
-      FROM event_registrations er
-      JOIN events e ON er.event_id = e.id
-      ORDER BY e.date ASC
-    `);
-
-    res.render("admin/event-registration-manage", {
-      registrations: registrations.rows,
-    });
-  }
-);
-
-router.post(
-  "/event-registration/delete/:id",
-  ensureAuthenticated,
-  async (req, res) => {
-    await db.query("DELETE FROM event_registrations WHERE id=$1", [
-      req.params.id,
-    ]);
-    res.redirect("/admin/event-registration/manage");
-  }
-);
 
 export default router;
